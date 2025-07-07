@@ -1,12 +1,175 @@
+<style>
+    /* Modern floating language button bottom right */
+    .lang-fab {
+      position: fixed;
+      bottom: 32px;
+      right: 32px;
+      z-index: 200;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: linear-gradient(90deg, #2563eb 0%, #60a5fa 100%);
+      color: #fff;
+      border: none;
+      border-radius: 2rem;
+      box-shadow: 0 4px 24px rgba(37,99,235,0.18), 0 2px 16px #60a5fa22;
+      padding: 0.5rem 1.5rem 0.5rem 1.1rem;
+      font-size: 1.13rem;
+      font-weight: 800;
+      letter-spacing: 0.04em;
+      cursor: pointer;
+      transition: background 0.3s, color 0.3s, box-shadow 0.3s, transform 0.2s;
+      outline: none;
+      gap: 0.7rem;
+      min-width: 80px;
+      min-height: 48px;
+      overflow: hidden;
+      backdrop-filter: blur(12px) saturate(1.2);
+      -webkit-backdrop-filter: blur(12px) saturate(1.2);
+      animation: fadeInSlideUp 0.7s cubic-bezier(.4,2,.3,1) 0.2s both;
+    }
+    .lang-fab .lang-icon {
+      font-size: 1.25rem;
+      margin-right: 0.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 100%;
+      line-height: 1;
+      transition: color 0.3s, filter 0.3s;
+      filter: drop-shadow(0 0 8px #60a5fa88);
+    }
+    .lang-fab .lang-en, .lang-fab .lang-gr {
+      font-weight: 700;
+      opacity: 0.7;
+      transition: color 0.3s, opacity 0.3s, font-weight 0.3s;
+      margin: 0 0.1rem;
+    }
+    .lang-fab .active {
+      color: #facc15;
+      opacity: 1;
+      font-weight: 900;
+      text-shadow: 0 0 8px #facc1555;
+    }
+    .lang-fab:hover, .lang-fab:focus {
+      background: linear-gradient(90deg, #1e40af 0%, #2563eb 100%);
+      color: #fff;
+      box-shadow: 0 8px 32px #2563eb44, 0 0 32px #60a5fa33;
+      transform: scale(1.06) translateY(-2px);
+    }
+    .lang-fab:active {
+      transform: scale(0.97);
+    }
+    body.dark .lang-fab {
+      background: rgba(24,28,42,0.22);
+      color: #60a5fa;
+      box-shadow: 0 12px 48px 0 #2563eb77, 0 1.5px 0 #60a5fa22, 0 0 48px #2563eb55;
+      border: 2.5px solid #334155;
+      text-shadow: 0 0 8px #2563eb88;
+      backdrop-filter: blur(18px) saturate(1.3);
+      -webkit-backdrop-filter: blur(18px) saturate(1.3);
+    }
+    body.dark .lang-fab:hover, body.dark .lang-fab:focus {
+      background: rgba(24,28,42,0.32);
+      color: #93c5fd;
+      box-shadow: 0 32px 96px 0 #2563eb77, 0 0 96px #60a5fa33, 0 0 0 12px #33415577;
+    }
+    @media (max-width: 700px) {
+      .lang-fab {
+        right: 16px;
+        bottom: 16px;
+        min-width: 64px;
+        min-height: 40px;
+        font-size: 1rem;
+        padding: 0.4rem 1rem 0.4rem 0.8rem;
+      }
+    }
+  </style>
+  <!-- Language button in navbar, next to dark mode toggle -->
+
+  <script>
+    // Ensure DOM is loaded before running language switch logic
+    document.addEventListener('DOMContentLoaded', function() {
+      const langBtn = document.getElementById('langToggleBtn');
+      const langEn = langBtn?.querySelector('.lang-en');
+      const langGr = langBtn?.querySelector('.lang-gr');
+      let currentLang = 'en';
+      function setLang(lang) {
+        currentLang = lang;
+        document.documentElement.lang = lang === 'gr' ? 'el' : 'en';
+        // Nav
+        document.querySelectorAll('.nav-links a').forEach((el, i) => {
+          el.textContent = translations[lang].nav[i];
+        });
+        // CV
+        document.querySelector('.cv-button').textContent = translations[lang].cv;
+        // Main title
+        document.querySelector('.main-animated-title').textContent = '';
+        document.querySelector('.main-animated-title').innerHTML = translations[lang].mainTitle;
+        // Subtitle
+        document.querySelector('#main-title-section p').textContent = translations[lang].mainSubtitle;
+        // Hero
+        document.getElementById('hero-title').innerHTML = translations[lang].heroTitle;
+        document.querySelector('#hero p').innerHTML = translations[lang].heroText;
+        // Projects
+        document.getElementById('projects-title').textContent = translations[lang].projectsTitle;
+        document.querySelectorAll('.projects-grid .project-card').forEach((card, i) => {
+          card.querySelector('h3').textContent = translations[lang].projects[i].title;
+          card.querySelector('p').textContent = translations[lang].projects[i].desc;
+          card.querySelector('a').textContent = translations[lang].projects[i].link;
+        });
+        // Skills
+        document.getElementById('skills-title').textContent = translations[lang].skillsTitle;
+        // Contact
+        document.getElementById('contact-title').textContent = translations[lang].contactTitle;
+        document.querySelector('#contact p').textContent = translations[lang].contactText;
+        // Contact button
+        document.getElementById('contact-main-button').textContent = translations[lang].contactBtn;
+        // Phone/email
+        document.querySelector('#phone-option a').textContent = translations[lang].phone;
+        document.querySelector('#email-option a').textContent = translations[lang].email;
+        document.querySelector('#phone-option').setAttribute('aria-label', translations[lang].phoneLabel);
+        document.querySelector('#phone-option').setAttribute('title', translations[lang].phoneLabel);
+        document.querySelector('#email-option').setAttribute('aria-label', 'Email');
+        document.querySelector('#email-option').setAttribute('title', 'Email');
+        // Form
+        const form = document.getElementById('contact-form');
+        form.elements['name'].placeholder = translations[lang].form.name;
+        form.elements['email'].placeholder = translations[lang].form.email;
+        form.elements['message'].placeholder = translations[lang].form.message;
+        form.querySelector('button[type="submit"]').textContent = translations[lang].form.send;
+        // Footer
+        document.querySelector('footer').innerHTML = translations[lang].footer;
+        // Social phone label
+        const phoneSocial = Array.from(document.querySelectorAll('.social-icons a')).find(a => a.href && a.href.startsWith('tel:'));
+        if (phoneSocial) {
+          phoneSocial.setAttribute('title', translations[lang].phoneLabel);
+          phoneSocial.setAttribute('aria-label', translations[lang].phoneLabel);
+        }
+        // Toggle button highlight
+        if (langEn && langGr) {
+          langEn.classList.toggle('active', lang === 'en');
+          langGr.classList.toggle('active', lang === 'gr');
+        }
+      }
+      if (langBtn) {
+        langBtn.addEventListener('click', () => {
+          setLang(currentLang === 'en' ? 'gr' : 'en');
+        });
+        // Change 'gr' to 'en' if you want English as default
+        setLang('gr');
+      }
+    });
+  </script>
 <!DOCTYPE html>
-<html lang="el">
+<html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Portfolio - Σπανός Παναγιώτης</title>
-  <meta name="description" content="Το προσωπικό portfolio του Σπανού Παναγιώτη, junior προγραμματιστή με έργα σε C#, .NET, WPF, REST API και άλλα." />
-  <meta property="og:title" content="Portfolio - Σπανός Παναγιώτης" />
-  <meta property="og:description" content="Δείτε τα έργα, δεξιότητες και επικοινωνήστε με τον Σπανό Παναγιώτη, junior προγραμματιστή." />
+  <title>Portfolio - Panagiotis Spanos</title>
+  <meta name="description" content="The personal portfolio of Panagiotis Spanos, junior developer with projects in C#, .NET, WPF, REST API and more." />
+  <meta property="og:title" content="Portfolio - Panagiotis Spanos" />
+  <meta property="og:description" content="See projects, skills, and contact Panagiotis Spanos, junior developer." />
   <meta property="og:type" content="website" />
   <meta property="og:image" content="/portfolio-preview.png" />
   <link
@@ -17,7 +180,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&display=swap" rel="stylesheet">
   <style>
-    /* Βασικά styles και typography */
+    /* Basic styles and typography */
     body {
       font-family: 'Inter', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
       line-height: 1.7;
@@ -97,7 +260,7 @@
       color: #93c5fd;
     }
 
-    /* Paragraphs και κείμενα */
+    /* Paragraphs and text */
     p, span, li {
       color: inherit;
       transition: color 0.3s ease;
@@ -116,7 +279,7 @@
       background-color: transparent;
     }
 
-    /* NavBar κεντραρισμένα links - οριζόντια και με animation */
+    /* NavBar centered links - horizontal with animation */
     .nav-links {
       display: flex;
       flex-direction: row;
@@ -836,7 +999,7 @@
       }
     }
 
-    /* --- Global animation για fade-in με καθυστέρηση --- */
+    /* --- Global animation for fade-in with delay --- */
     .fade-in-up {
       opacity: 0;
       transform: translateY(30px);
@@ -1069,10 +1232,10 @@
       .nav-right { margin-right: 0.3rem; }
       .icon-toggle { width: 32px; height: 32px; }
     }
-    /* Απόκρυψη του παλιού toggle */
+    /* Hide old toggle */
     #darkToggle, .toggle-switch, .toggle-label, .nav-toggle-left, .nav-actions-right { display: none !important; }
 
-    /* Διόρθωση slider μπίλιας toggle για smooth μετάβαση */
+    /* Fix toggle slider ball for smooth transition */
     .toggle-switch .slider {
       transition: left 0.35s cubic-bezier(.4,2,.3,1), background 0.3s, box-shadow 0.3s;
     }
@@ -1088,29 +1251,381 @@
 <body>
 
   <!-- Sticky NavBar -->
-  <nav id="main-navbar" aria-label="Κύρια πλοήγηση">
+  <nav id="main-navbar" aria-label="Main navigation">
     <div class="nav-left">
-      <button id="darkToggleBtn" aria-label="Εναλλαγή σκοτεινής λειτουργίας" tabindex="0" class="icon-toggle">
+      <button id="darkToggleBtn" aria-label="Toggle dark mode" tabindex="0" class="icon-toggle">
         <span class="icon sun"><i class="fas fa-sun"></i></span>
         <span class="icon moon"><i class="fas fa-moon"></i></span>
       </button>
+      <button id="langToggleBtn" aria-label="Switch language" class="lang-navbar-btn">
+        <span class="lang-icon"><i class="fas fa-globe"></i></span>
+        <span class="lang-switch">
+          <span class="lang-en active">EN</span>
+          <span class="divider">•</span>
+          <span class="lang-gr">GR</span>
+        </span>
+      </button>
     </div>
     <ul class="nav-links">
-      <li><a href="#hero">Αρχική</a></li>
+      <li><a href="#hero">Home</a></li>
       <li><a href="#projects-title">Projects</a></li>
-      <li><a href="#skills">Δεξιότητες</a></li>
-      <li><a href="#contact">Επικοινωνία</a></li>
+      <li><a href="#skills">Skills</a></li>
+      <li><a href="#contact">Contact</a></li>
     </ul>
     <div class="nav-right">
-      <a href="CV_Spanos_Panagiotis.pdf" download class="cv-button" aria-label="Κατέβασε το βιογραφικό μου σε PDF">
+      <!-- Removed duplicate language button from nav-right -->
+      <a href="CV_Spanos_Panagiotis.pdf" download class="cv-button" aria-label="Download my CV in PDF">
         CV
       </a>
     </div>
+  <style>
+    /* Language button in navbar - glassy, matches .cv-button */
+    .lang-navbar-btn {
+      margin-right: 0.5rem;
+      background: linear-gradient(90deg, #2563eb 0%, #60a5fa 100%);
+      color: white;
+      padding: 0.5rem 1.2rem;
+      border-radius: 0.5rem;
+      font-weight: 700;
+      font-size: 1.09rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.7rem;
+      border: none;
+      box-shadow: 0 2px 8px rgba(37,99,235,0.10);
+      letter-spacing: 0.03em;
+      transition: background 0.3s, box-shadow 0.3s, transform 0.2s;
+      outline: none;
+      position: relative;
+      cursor: pointer;
+      min-width: 120px;
+      min-height: 44px;
+      height: 44px;
+      backdrop-filter: blur(14px) saturate(1.22);
+      -webkit-backdrop-filter: blur(14px) saturate(1.22);
+      overflow: hidden;
+      user-select: none;
+    }
+    .lang-navbar-btn:hover, .lang-navbar-btn:focus {
+      background: linear-gradient(90deg, #1e40af 0%, #2563eb 100%);
+      box-shadow: 0 4px 16px rgba(37,99,235,0.18);
+      transform: translateY(-2px) scale(1.04);
+      filter: none;
+      border: none;
+      transition: background 0.3s, box-shadow 0.3s, transform 0.2s;
+    }
+    @keyframes btnHoverFade {
+      0% { filter: brightness(1.04); }
+      80% { filter: brightness(1.04); }
+      100% { filter: brightness(1); background: rgba(255,255,255,0.75); box-shadow: 0 4px 24px 0 #2563eb18, 0 2px 16px #60a5fa22; border-color: #e0e7ef; }
+    }
+    .lang-navbar-btn:active {
+      transform: scale(0.97);
+    }
+    .lang-navbar-btn .lang-icon {
+      font-size: 0.98rem;
+      margin-right: 0.85rem;
+      margin-left: -0.55rem;
+      display: flex;
+      align-items: flex-end;
+      justify-content: center;
+      height: 18px;
+      min-width: 18px;
+      line-height: 1;
+      filter: drop-shadow(0 0 8px #60a5fa88);
+      position: relative;
+      top: 7px;
+    }
+    .lang-switch {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.18rem;
+      height: 22px;
+      min-height: 22px;
+      line-height: 1.1;
+      margin-top: 0;
+      position: relative;
+      top: 10px;
+    }
+    .lang-navbar-btn {
+      padding-top: 0;
+      padding-bottom: 0;
+      height: 36px;
+      min-height: 36px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .lang-switch {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.2rem;
+      height: 100%;
+      width: 100%;
+      line-height: 1;
+    }
+    .lang-navbar-btn > span {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 100%;
+      height: 100%;
+    }
+    .lang-switch .divider {
+      opacity: 0.7;
+      margin: 0 0.32rem 0 0.32rem;
+      font-size: 1.1em;
+      color: #60a5fa;
+      font-weight: 900;
+      position: relative;
+      top: -2px;
+      letter-spacing: 0.1em;
+      font-family: 'Segoe UI Symbol', 'Arial', sans-serif;
+      content: '\2022'; /* Use a bullet instead of a line */
+      display: inline-block;
+    }
+    .lang-switch .lang-en,
+    .lang-switch .lang-gr {
+      font-weight: 700;
+      opacity: 0.7;
+      transition: color 0.3s, opacity 0.3s;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      height: 22px;
+      font-size: 0.97rem;
+      line-height: 1.1;
+      position: relative;
+      top: 7px;
+    }
+    .lang-switch .active {
+      color: #facc15;
+      opacity: 1;
+      font-weight: 700;
+      text-shadow: 0 0 8px #facc1555;
+    }
+    body.dark .lang-navbar-btn {
+      background: #131a2a;
+      color: #60a5fa;
+      box-shadow: 0 0 16px #2563eb88, 0 2px 16px #1e40af44;
+      border: 1.5px solid #2563eb44;
+      text-shadow: 0 0 8px #2563eb88;
+    }
+    body.dark .lang-navbar-btn:hover, body.dark .lang-navbar-btn:focus {
+      background: #1e293b;
+      color: #93c5fd;
+      box-shadow: 0 0 24px #2563ebcc, 0 2px 32px #1e40af99;
+    }
+
+    @media (max-width: 700px) {
+      .lang-navbar-btn {
+        min-width: 54px;
+        min-height: 32px;
+        font-size: 0.97rem;
+        padding: 0.3rem 0.7rem 0.3rem 0.6rem;
+      }
+    }
+    .lang-toggle {
+      background: linear-gradient(90deg, #60a5fa 0%, #2563eb 100%);
+      color: #fff;
+      border: none;
+      border-radius: 0.5rem;
+      font-weight: 700;
+      font-size: 1.05rem;
+      padding: 0.5rem 1.1rem;
+      margin-right: 1rem;
+      margin-left: 0.2rem;
+      cursor: pointer;
+      box-shadow: 0 2px 8px rgba(37,99,235,0.10);
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      position: relative;
+      overflow: hidden;
+      transition: background 0.3s, color 0.3s, box-shadow 0.3s, transform 0.2s;
+      outline: none;
+    }
+    .lang-toggle .lang-en, .lang-toggle .lang-gr {
+      transition: color 0.3s, font-weight 0.3s;
+    }
+    .lang-toggle .lang-en.active, .lang-toggle .lang-gr.active {
+      font-weight: 900;
+      color: #facc15;
+      text-shadow: 0 0 8px #facc1555;
+    }
+    .lang-toggle:hover, .lang-toggle:focus {
+      background: linear-gradient(90deg, #2563eb 0%, #60a5fa 100%);
+      color: #fff;
+      box-shadow: 0 4px 16px rgba(37,99,235,0.18);
+      transform: translateY(-2px) scale(1.04);
+    }
+    body.dark .lang-toggle {
+      background: linear-gradient(90deg, #1e293b 0%, #2563eb 100%);
+      color: #60a5fa;
+      box-shadow: 0 0 16px #2563eb88, 0 2px 16px #1e40af44;
+      border: 1.5px solid #2563eb44;
+      text-shadow: 0 0 8px #2563eb88;
+    }
+    body.dark .lang-toggle:hover, body.dark .lang-toggle:focus {
+      background: linear-gradient(90deg, #2563eb 0%, #60a5fa 100%);
+      color: #93c5fd;
+      box-shadow: 0 0 24px #2563ebcc, 0 2px 32px #1e40af99;
+    }
+  </style>
+  <script>
+  // English and Greek translations for all dynamic text
+  const translations = {
+    en: {
+      nav: ['Home', 'Projects', 'Skills', 'Contact'],
+      cv: 'CV',
+      mainTitle: 'Panagiotis Spanos',
+      mainSubtitle: 'Portfolio • Junior Software Engineer • C#/.NET • UI/UX',
+      heroTitle: `Hello! I'm <span style="color:#2563eb;">Panagiotis Spanos</span>`,
+      heroText: `I am a <b>junior developer</b> passionate about creating practical solutions and beautiful UIs. I started with personal projects and continuous practice, using tools like <b>Visual Studio</b> and <b>VS Code</b> to develop in <b>C#, .NET, WPF</b> and other technologies.<br><br>I enjoy <span style="color:#2563eb;font-weight:600;">combining backend logic with clean, functional UI</span> — as in projects like password manager CLI, finance tracker with WPF, and RESTful API applications. Through my experience, I've learned to organize small projects, work with <b>GitHub</b>, and constantly improve my code.<br><br>Currently, I am growing through hands-on practice and personal projects that help me dive deeper into real-world development scenarios. <span style="color:#60a5fa;font-weight:600;">My goal is to get better every day!</span>`,
+      projectsTitle: 'My Projects',
+      projects: [
+        {
+          title: 'URL Shortener API',
+          desc: 'A simple API for shortening URLs using .NET and C#.',
+          link: 'See it on GitHub →'
+        },
+        {
+          title: 'Finance Tracker (WPF)',
+          desc: 'Expense management app with a graphical interface (WPF) and Tailwind-like UI.',
+          link: 'See it on GitHub →'
+        },
+        {
+          title: 'Password Manager (CLI)',
+          desc: 'Password manager using console and encryption in local files.',
+          link: 'See it on GitHub →'
+        }
+      ],
+      skillsTitle: 'Skills',
+      contactTitle: 'Contact',
+      contactText: 'You can contact me by email, through social media, or with the form below.',
+      contactBtn: 'Contact me',
+      contactBtnBack: 'Back',
+      phone: '+30 697 050 2878',
+      email: 'panosqwe632@gmail.com',
+      form: { name: 'Name', email: 'Email', message: 'Message', send: 'Send', status: 'Your email program will open to send the message.' },
+      footer: '&copy; 2025 Panagiotis Spanos. All rights reserved.',
+      phoneLabel: 'Phone'
+    },
+    gr: {
+      nav: ['Αρχική', 'Projects', 'Δεξιότητες', 'Επικοινωνία'],
+      cv: 'CV',
+      mainTitle: 'Σπανός Παναγιώτης',
+      mainSubtitle: 'Portfolio • Junior Software Engineer • C#/.NET • UI/UX',
+      heroTitle: `Γεια σου! Είμαι ο <span style="color:#2563eb;">Σπανός Παναγιώτης</span>`,
+      heroText: `Είμαι <b>junior προγραμματιστής</b> με πάθος για τη δημιουργία πρακτικών λύσεων και όμορφων UI. Ξεκίνησα με προσωπικά projects και συνεχή εξάσκηση, χρησιμοποιώντας εργαλεία όπως <b>Visual Studio</b> και <b>VS Code</b> για ανάπτυξη σε <b>C#, .NET, WPF</b> και άλλες τεχνολογίες.<br><br>Μου αρέσει να <span style="color:#2563eb;font-weight:600;">συνδυάζω backend λογική με καθαρό, λειτουργικό UI</span> — όπως σε projects τύπου password manager CLI, finance tracker με WPF και RESTful API εφαρμογές. Μέσα από την εμπειρία μου έχω μάθει να οργανώνω ένα μικρό project, να δουλεύω με <b>GitHub</b> και να βελτιώνω συνεχώς τον κώδικά μου.<br><br>Αυτή την περίοδο εξελίσσομαι μέσα από πρακτική εξάσκηση και προσωπικά έργα που με βοηθούν να εμβαθύνω σε πραγματικά σενάρια ανάπτυξης. <span style="color:#60a5fa;font-weight:600;">Στόχος μου είναι να γίνομαι κάθε μέρα καλύτερος!</span>`,
+      projectsTitle: 'Τα Projects μου',
+      projects: [
+        {
+          title: 'URL Shortener API',
+          desc: 'Ένα απλό API για συντόμευση URL με χρήση .NET και C#.',
+          link: 'Δες το στο GitHub →'
+        },
+        {
+          title: 'Finance Tracker (WPF)',
+          desc: 'Εφαρμογή για διαχείριση εξόδων με γραφικό περιβάλλον (WPF) και Tailwind-like UI.',
+          link: 'Δες το στο GitHub →'
+        },
+        {
+          title: 'Password Manager (CLI)',
+          desc: 'Διαχειριστής κωδικών με χρήση κονσόλας και κρυπτογράφησης σε τοπικά αρχεία.',
+          link: 'Δες το στο GitHub →'
+        }
+      ],
+      skillsTitle: 'Δεξιότητες',
+      contactTitle: 'Επικοινωνία',
+      contactText: 'Μπορείς να επικοινωνήσεις μαζί μου με email, μέσω των social media ή με τη φόρμα παρακάτω.',
+      contactBtn: 'Επικοινώνησε μαζί μου',
+      contactBtnBack: 'Επιστροφή',
+      phone: '+30 697 050 2878',
+      email: 'panosqwe632@gmail.com',
+      form: { name: 'Όνομα', email: 'Email', message: 'Μήνυμα', send: 'Αποστολή', status: 'Το πρόγραμμα email σας θα ανοίξει για να στείλετε το μήνυμα.' },
+      footer: '&copy; 2025 Σπανός Παναγιώτης. Όλα τα δικαιώματα κατοχυρωμένα.',
+      phoneLabel: 'Τηλέφωνο'
+    }
+  };
+  document.addEventListener('DOMContentLoaded', function() {
+    const langBtn = document.getElementById('langToggleBtn');
+    const langEn = langBtn?.querySelector('.lang-en');
+    const langGr = langBtn?.querySelector('.lang-gr');
+    let currentLang = 'en';
+    function setLang(lang) {
+      currentLang = lang;
+      document.documentElement.lang = lang === 'gr' ? 'el' : 'en';
+      // Nav
+      document.querySelectorAll('.nav-links a').forEach((el, i) => {
+        el.textContent = translations[lang].nav[i];
+      });
+      // CV
+      document.querySelector('.cv-button').textContent = translations[lang].cv;
+      // Main title
+      document.querySelector('.main-animated-title').textContent = '';
+      document.querySelector('.main-animated-title').innerHTML = translations[lang].mainTitle;
+      // Subtitle
+      document.querySelector('#main-title-section p').textContent = translations[lang].mainSubtitle;
+      // Hero
+      document.getElementById('hero-title').innerHTML = translations[lang].heroTitle;
+      document.querySelector('#hero p').innerHTML = translations[lang].heroText;
+      // Projects
+      document.getElementById('projects-title').textContent = translations[lang].projectsTitle;
+      document.querySelectorAll('.projects-grid .project-card').forEach((card, i) => {
+        card.querySelector('h3').textContent = translations[lang].projects[i].title;
+        card.querySelector('p').textContent = translations[lang].projects[i].desc;
+        card.querySelector('a').textContent = translations[lang].projects[i].link;
+      });
+      // Skills
+      document.getElementById('skills-title').textContent = translations[lang].skillsTitle;
+      // Contact
+      document.getElementById('contact-title').textContent = translations[lang].contactTitle;
+      document.querySelector('#contact p').textContent = translations[lang].contactText;
+      // Contact button
+      document.getElementById('contact-main-button').textContent = translations[lang].contactBtn;
+      // Phone/email
+      document.querySelector('#phone-option a').textContent = translations[lang].phone;
+      document.querySelector('#email-option a').textContent = translations[lang].email;
+      document.querySelector('#phone-option').setAttribute('aria-label', translations[lang].phoneLabel);
+      document.querySelector('#phone-option').setAttribute('title', translations[lang].phoneLabel);
+      document.querySelector('#email-option').setAttribute('aria-label', 'Email');
+      document.querySelector('#email-option').setAttribute('title', 'Email');
+      // Form
+      const form = document.getElementById('contact-form');
+      form.elements['name'].placeholder = translations[lang].form.name;
+      form.elements['email'].placeholder = translations[lang].form.email;
+      form.elements['message'].placeholder = translations[lang].form.message;
+      form.querySelector('button[type="submit"]').textContent = translations[lang].form.send;
+      // Footer
+      document.querySelector('footer').innerHTML = translations[lang].footer;
+      // Social phone label
+      const phoneSocial = Array.from(document.querySelectorAll('.social-icons a')).find(a => a.href && a.href.startsWith('tel:'));
+      if (phoneSocial) {
+        phoneSocial.setAttribute('title', translations[lang].phoneLabel);
+        phoneSocial.setAttribute('aria-label', translations[lang].phoneLabel);
+      }
+      // Toggle button highlight
+      if (langEn && langGr) {
+        langEn.classList.toggle('active', lang === 'en');
+        langGr.classList.toggle('active', lang === 'gr');
+      }
+    }
+    if (langBtn) {
+      langBtn.addEventListener('click', () => {
+        setLang(currentLang === 'en' ? 'gr' : 'en');
+      });
+      setLang('en');
+    }
+  });
+  </script>
   </nav>
 
   <!-- Animated Main Title -->
-  <section id="main-title-section" style="background: #2563eb; padding: 2.5rem 0 1.5rem 0; margin-bottom: 0; border-radius: 0 0 1.5rem 1.5rem; box-shadow: 0 4px 24px 0 rgba(37,99,235,0.13);
-  ">
+  <section id="main-title-section" style="background: #2563eb; padding: 2.5rem 0 1.5rem 0; margin-bottom: 0; border-radius: 0 0 1.5rem 1.5rem; box-shadow: 0 4px 24px 0 rgba(37,99,235,0.13);">
     <h1 class="main-animated-title" style="text-align:center; font-size:3.5rem; font-weight:900; letter-spacing:0.07em; color:#fff; margin:0; text-shadow: 0 6px 32px #1e40af55, 0 1px 0 #fff2;">
       Panagiotis Spanos
     </h1>
@@ -1121,41 +1636,41 @@
   <section id="hero" class="about-highlight fade-in-up" role="region" aria-labelledby="hero-title" style="position:relative;overflow:hidden;">
     <div style="position:absolute;top:-60px;left:-60px;width:320px;height:320px;background:radial-gradient(circle at 40% 40%, #60a5fa55 0%, #2563eb11 80%, transparent 100%);filter:blur(16px);z-index:0;"></div>
     <div style="position:absolute;bottom:-60px;right:-60px;width:260px;height:260px;background:radial-gradient(circle at 60% 60%, #2563eb44 0%, #1e40af11 80%, transparent 100%);filter:blur(18px);z-index:0;"></div>
-    <h1 id="hero-title" style="font-size:2.2rem;font-weight:900;letter-spacing:0.01em;margin-bottom:0.7rem;position:relative;z-index:1;text-shadow:0 0 18px #60a5fa88,0 2px 24px #2563eb55;animation:glowPulse 2.5s infinite alternate;">Γεια σου! Είμαι ο <span style="color:#2563eb;">Σπανός Παναγιώτης</span></h1>
+    <h1 id="hero-title" style="font-size:2.2rem;font-weight:900;letter-spacing:0.01em;margin-bottom:0.7rem;position:relative;z-index:1;text-shadow:0 0 18px #60a5fa88,0 2px 24px #2563eb55;animation:glowPulse 2.5s infinite alternate;">Hello! I'm <span style="color:#2563eb;">Panagiotis Spanos</span></h1>
     <h2 id="about-title" style="margin-top:1.2rem;font-size:1.3rem;font-weight:700;position:relative;z-index:1;"></h2>
     <p style="max-width:700px;margin:0 auto 1.2rem auto;font-size:1.13rem;line-height:1.8;position:relative;z-index:1;">
-      Είμαι <b>junior προγραμματιστής</b> με πάθος για τη δημιουργία πρακτικών λύσεων και όμορφων UI. Ξεκίνησα με προσωπικά projects και συνεχή εξάσκηση, χρησιμοποιώντας εργαλεία όπως <b>Visual Studio</b> και <b>VS Code</b> για ανάπτυξη σε <b>C#, .NET, WPF</b> και άλλες τεχνολογίες.<br><br>
-      Μου αρέσει να <span style="color:#2563eb;font-weight:600;">συνδυάζω backend λογική με καθαρό, λειτουργικό UI</span> — όπως σε projects τύπου password manager CLI, finance tracker με WPF και RESTful API εφαρμογές. Μέσα από την εμπειρία μου έχω μάθει να οργανώνω ένα μικρό project, να δουλεύω με <b>GitHub</b> και να βελτιώνω συνεχώς τον κώδικά μου.<br><br>
-      Αυτή την περίοδο εξελίσσομαι μέσα από πρακτική εξάσκηση και προσωπικά έργα που με βοηθούν να εμβαθύνω σε πραγματικά σενάρια ανάπτυξης. <span style="color:#60a5fa;font-weight:600;">Στόχος μου είναι να γίνομαι κάθε μέρα καλύτερος!</span>
+      I am a <b>junior developer</b> passionate about creating practical solutions and beautiful UIs. I started with personal projects and continuous practice, using tools like <b>Visual Studio</b> and <b>VS Code</b> to develop in <b>C#, .NET, WPF</b> and other technologies.<br><br>
+      I enjoy <span style="color:#2563eb;font-weight:600;">combining backend logic with clean, functional UI</span> — as in projects like password manager CLI, finance tracker with WPF, and RESTful API applications. Through my experience, I've learned to organize small projects, work with <b>GitHub</b>, and constantly improve my code.<br><br>
+      Currently, I am growing through hands-on practice and personal projects that help me dive deeper into real-world development scenarios. <span style="color:#60a5fa;font-weight:600;">My goal is to get better every day!</span>
     </p>
   </section>
 
   <!-- Projects Section -->
   <section role="region" aria-labelledby="projects-title" class="fade-in-up">
-    <h2 id="projects-title" style="text-align:center; margin-bottom:2rem;">Τα Projects μου</h2>
+    <h2 id="projects-title" style="text-align:center; margin-bottom:2rem;">My Projects</h2>
     <div class="projects-grid">
       <article class="project-card" tabindex="0" onclick="window.open('https://github.com/Spanos-Panos/url-shortener','_blank')" style="cursor:pointer;">
         <img src="https://placehold.co/400x200?text=URL+Shortener" alt="URL Shortener API preview" style="width:100%;border-radius:0.5rem 0.5rem 0 0;margin-bottom:1rem;object-fit:cover;max-height:180px;">
         <div class="project-card-content">
           <h3>URL Shortener API</h3>
-          <p>Ένα απλό API για συντόμευση URL με χρήση .NET και C#.</p>
-          <a href="https://github.com/Spanos-Panos/url-shortener" target="_blank" rel="noopener">Δες το στο GitHub →</a>
+          <p>A simple API for shortening URLs using .NET and C#.</p>
+          <a href="https://github.com/Spanos-Panos/url-shortener" target="_blank" rel="noopener">See it on GitHub →</a>
         </div>
       </article>
       <article class="project-card" tabindex="0" onclick="window.open('https://github.com/Spanos-Panos/finance-tracker','_blank')" style="cursor:pointer;">
         <img src="https://placehold.co/400x200?text=Finance+Tracker" alt="Finance Tracker preview" style="width:100%;border-radius:0.5rem 0.5rem 0 0;margin-bottom:1rem;object-fit:cover;max-height:180px;">
         <div class="project-card-content">
           <h3>Finance Tracker (WPF)</h3>
-          <p>Εφαρμογή για διαχείριση εξόδων με γραφικό περιβάλλον (WPF) και Tailwind-like UI.</p>
-          <a href="https://github.com/Spanos-Panos/finance-tracker" target="_blank" rel="noopener">Δες το στο GitHub →</a>
+          <p>Expense management app with a graphical interface (WPF) and Tailwind-like UI.</p>
+          <a href="https://github.com/Spanos-Panos/finance-tracker" target="_blank" rel="noopener">See it on GitHub →</a>
         </div>
       </article>
       <article class="project-card" tabindex="0" onclick="window.open('https://github.com/Spanos-Panos/password-manager-cli','_blank')" style="cursor:pointer;">
         <img src="https://placehold.co/400x200?text=Password+Manager" alt="Password Manager CLI preview" style="width:100%;border-radius:0.5rem 0.5rem 0 0;margin-bottom:1rem;object-fit:cover;max-height:180px;">
         <div class="project-card-content">
           <h3>Password Manager (CLI)</h3>
-          <p>Διαχειριστής κωδικών με χρήση κονσόλας και κρυπτογράφησης σε τοπικά αρχεία.</p>
-          <a href="https://github.com/Spanos-Panos/password-manager-cli" target="_blank" rel="noopener">Δες το στο GitHub →</a>
+          <p>Password manager using console and encryption in local files.</p>
+          <a href="https://github.com/Spanos-Panos/password-manager-cli" target="_blank" rel="noopener">See it on GitHub →</a>
         </div>
       </article>
     </div>
@@ -1163,7 +1678,7 @@
 
   <!-- Skills Section -->
   <section id="skills" role="region" aria-labelledby="skills-title" class="fade-in-up">
-    <h2 id="skills-title" style="text-align:center; margin-bottom:2rem;">Δεξιότητες</h2>
+    <h2 id="skills-title" style="text-align:center; margin-bottom:2rem;">Skills</h2>
 
     <div class="skills-grid">
       <div class="skill-item"><i class="fab fa-js" title="JavaScript" aria-hidden="true"></i> JavaScript</div>
@@ -1183,9 +1698,9 @@
 
   <!-- Contact Section (only one, at the bottom, with button feature) -->
   <section id="contact" role="region" aria-labelledby="contact-title" class="fade-in-up" style="margin-top:2.5rem;">
-    <h2 id="contact-title" style="text-align:center; margin-bottom:1rem;">Επικοινωνία</h2>
+    <h2 id="contact-title" style="text-align:center; margin-bottom:1rem;">Contact</h2>
     <p style="text-align:center; max-width: 640px; margin: 0 auto 2rem;">
-      Μπορείς να επικοινωνήσεις μαζί μου με email, μέσω των social media ή με τη φόρμα παρακάτω.
+      You can contact me by email, through social media, or with the form below.
     </p>
     <div style="display:flex;flex-direction:column;align-items:center;gap:1.5rem;">
       <div id="contact-button-container">
@@ -1194,7 +1709,7 @@
           <a href="tel:+306970502878">+30 697 050 2878</a>
         </div>
         <button id="contact-main-button" type="button">
-          Επικοινώνησε μαζί μου
+          Contact me
         </button>
         <div id="email-option" class="contact-option" style="right:0;">
           <i class="fas fa-envelope"></i>
@@ -1202,10 +1717,10 @@
         </div>
       </div>
       <form id="contact-form" style="width:100%;max-width:400px;display:flex;flex-direction:column;gap:1rem;">
-        <input type="text" name="name" placeholder="Όνομα" required>
+        <input type="text" name="name" placeholder="Name" required>
         <input type="email" name="email" placeholder="Email" required>
-        <textarea name="message" placeholder="Μήνυμα" required rows="4"></textarea>
-        <button type="submit">Αποστολή</button>
+        <textarea name="message" placeholder="Message" required rows="4"></textarea>
+        <button type="submit">Send</button>
         <div id="form-status" style="text-align:center;font-size:0.98rem;margin-top:0.5rem;"></div>
       </form>
       <div class="social-icons" role="list" aria-label="Social media links">
@@ -1218,7 +1733,7 @@
         <a href="https://www.instagram.com/panos___spanos/" target="_blank" aria-label="Instagram" class="btn-hover" title="Instagram" role="listitem">
           <i class="fab fa-instagram" aria-hidden="true"></i>
         </a>
-        <a href="tel:+306970502878" aria-label="Τηλέφωνο" class="btn-hover" title="Τηλέφωνο" role="listitem">
+        <a href="tel:+306970502878" aria-label="Phone" class="btn-hover" title="Phone" role="listitem">
           <i class="fas fa-phone" aria-hidden="true"></i>
         </a>
       </div>
@@ -1227,7 +1742,7 @@
 
   <!-- Footer -->
   <footer>
-    &copy; 2025 Σπανός Παναγιώτης. Όλα τα δικαιώματα κατοχυρωμένα.
+    &copy; 2025 Panagiotis Spanos. All rights reserved.
   </footer>
 
   <button id="scrollTopBtn" aria-label="Επιστροφή στην κορυφή" title="Scroll to top">
@@ -1235,7 +1750,7 @@
   </button>
 
   <script>
-  // Dark mode toggle logic (βελτιωμένο remember mode)
+  // Dark mode toggle logic (improved remember mode)
   const toggleBtn = document.getElementById('darkToggleBtn');
   const body = document.body;
   function applyDarkModeSetting() {
@@ -1266,16 +1781,16 @@
       const name = contactForm.elements['name'].value;
       const email = contactForm.elements['email'].value;
       const message = contactForm.elements['message'].value;
-      const mailto = `mailto:panosqwe632@gmail.com?subject=Επικοινωνία από ${encodeURIComponent(name)}&body=Όνομα: ${encodeURIComponent(name)}%0AEmail: ${encodeURIComponent(email)}%0A%0A${encodeURIComponent(message)}`;
+      const mailto = `mailto:panosqwe632@gmail.com?subject=Contact from ${encodeURIComponent(name)}&body=Name: ${encodeURIComponent(name)}%0AEmail: ${encodeURIComponent(email)}%0A%0A${encodeURIComponent(message)}`;
       window.location.href = mailto;
       const status = document.getElementById('form-status');
-      status.textContent = 'Το πρόγραμμα email σας θα ανοίξει για να στείλετε το μήνυμα.';
+      status.textContent = 'Your email program will open to send the message.';
       status.style.color = '#2563eb';
       setTimeout(() => { status.textContent = ''; }, 5000);
     });
   }
 
-  // ✅ Ενεργοποίηση fade-in όταν φορτωθεί η σελίδα
+  // ✅ Enable fade-in when the page loads
   document.addEventListener("DOMContentLoaded", () => {
     document.querySelectorAll(".fade-in-up").forEach(el => {
       el.classList.add("visible");
@@ -1306,9 +1821,9 @@
   contactMainBtn.addEventListener('click', function() {
     contactBtnContainer.classList.toggle('active');
     if (contactBtnContainer.classList.contains('active')) {
-      contactMainBtn.textContent = 'Επιστροφή';
+      contactMainBtn.textContent = 'Back';
     } else {
-      contactMainBtn.textContent = 'Επικοινώνησε μαζί μου';
+      contactMainBtn.textContent = 'Contact me';
     }
   });
 
@@ -1331,4 +1846,48 @@
   </script>
 
 </body>
+  <script>
+    // Language dropdown logic
+    (function() {
+      const langBtn = document.getElementById('langToggleBtn');
+      const langDropdown = document.getElementById('langDropdown');
+      if (langBtn && langDropdown) {
+        langBtn.addEventListener('click', (e) => {
+          e.stopPropagation();
+          langDropdown.classList.toggle('hidden');
+        });
+        document.addEventListener('click', (e) => {
+          if (!langBtn.contains(e.target)) {
+            langDropdown.classList.add('hidden');
+          }
+        });
+        langDropdown.querySelectorAll('button[data-lang]').forEach(btn => {
+          btn.addEventListener('click', (e) => {
+            // Here you can add your language switching logic
+            langDropdown.classList.add('hidden');
+          });
+        });
+      }
+    })();
+  </script>
+  <style>
+      .lang-navbar-btn .flag-icon {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.18em;
+        margin-right: 0.38em;
+        opacity: 0;
+        transition: opacity 0.35s, transform 0.35s;
+        transform: translateY(-8px) scale(1.08) rotate(-8deg);
+      position: relative;
+      top: 7px;
+        filter: drop-shadow(0 0 6px #60a5fa55);
+        background: rgba(255,255,255,0.7);
+        border-radius: 0.3em;
+        padding: 0.04em 0.18em;
+        box-shadow: 0 2px 8px #2563eb22;
+        border: 1px solid #e0e7ef;
+      }
+    </style>
 </html>
