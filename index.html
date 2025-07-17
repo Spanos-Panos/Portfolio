@@ -1,4 +1,13 @@
 <style>
+    .projects-grid-centered {
+      width: 100%;
+      min-height: 180px;
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 0.8rem;
+      justify-items: center;
+      align-items: stretch;
+    }
     /* Modern floating language button bottom right */
     .lang-fab {
       position: fixed;
@@ -1646,34 +1655,89 @@
   </section>
 
   <!-- Projects Section -->
-  <section role="region" aria-labelledby="projects-title" class="fade-in-up">
+  <section role="region" aria-labelledby="projects-title" class="fade-in-up" style="position:relative;">
     <h2 id="projects-title" style="text-align:center; margin-bottom:2rem;">My Projects</h2>
-    <div class="projects-grid">
-      <article class="project-card" tabindex="0" onclick="window.open('https://github.com/Spanos-Panos/url-shortener','_blank')" style="cursor:pointer;">
-        <img src="https://placehold.co/400x200?text=URL+Shortener" alt="URL Shortener API preview" style="width:100%;border-radius:0.5rem 0.5rem 0 0;margin-bottom:1rem;object-fit:cover;max-height:180px;">
-        <div class="project-card-content">
-          <h3>URL Shortener API</h3>
-          <p>A simple API for shortening URLs using .NET and C#.</p>
-          <a href="https://github.com/Spanos-Panos/url-shortener" target="_blank" rel="noopener">See it on GitHub →</a>
+    <div class="projects-border">
+      <div id="projects-container" class="projects-grid-centered">
+        <!-- Project cards will be rendered here by JS -->
+      </div>
+      <div class="projects-pagination">
+        <div class="projects-pagination-flex">
+          <button id="projects-prev" aria-label="Previous Projects" class="project-arrow-btn">&#8592;</button>
+          <span id="projects-page-indicator" class="projects-page-indicator">1/1</span>
+          <button id="projects-next" aria-label="Next Projects" class="project-arrow-btn">&#8594;</button>
         </div>
-      </article>
-      <article class="project-card" tabindex="0" onclick="window.open('https://github.com/Spanos-Panos/finance-tracker','_blank')" style="cursor:pointer;">
-        <img src="https://placehold.co/400x200?text=Finance+Tracker" alt="Finance Tracker preview" style="width:100%;border-radius:0.5rem 0.5rem 0 0;margin-bottom:1rem;object-fit:cover;max-height:180px;">
-        <div class="project-card-content">
-          <h3>Finance Tracker (WPF)</h3>
-          <p>Expense management app with a graphical interface (WPF) and Tailwind-like UI.</p>
-          <a href="https://github.com/Spanos-Panos/finance-tracker" target="_blank" rel="noopener">See it on GitHub →</a>
-        </div>
-      </article>
-      <article class="project-card" tabindex="0" onclick="window.open('https://github.com/Spanos-Panos/password-manager-cli','_blank')" style="cursor:pointer;">
-        <img src="https://placehold.co/400x200?text=Password+Manager" alt="Password Manager CLI preview" style="width:100%;border-radius:0.5rem 0.5rem 0 0;margin-bottom:1rem;object-fit:cover;max-height:180px;">
-        <div class="project-card-content">
-          <h3>Password Manager (CLI)</h3>
-          <p>Password manager using console and encryption in local files.</p>
-          <a href="https://github.com/Spanos-Panos/password-manager-cli" target="_blank" rel="noopener">See it on GitHub →</a>
-        </div>
-      </article>
+      </div>
     </div>
+    <script>
+      // All project data (add more as needed)
+      const projects = [
+        {
+          title: 'URL Shortener API',
+          desc: 'A simple API for shortening URLs using .NET and C#.',
+          img: 'https://placehold.co/400x200?text=URL+Shortener',
+          alt: 'URL Shortener API preview',
+          link: 'https://github.com/Spanos-Panos/url-shortener'
+        },
+        {
+          title: 'Finance Tracker (WPF)',
+          desc: 'Expense management app with a graphical interface (WPF) and Tailwind-like UI.',
+          img: 'https://placehold.co/400x200?text=Finance+Tracker',
+          alt: 'Finance Tracker preview',
+          link: 'https://github.com/Spanos-Panos/finance-tracker'
+        },
+        {
+          title: 'Password Manager (CLI)',
+          desc: 'Password manager using console and encryption in local files.',
+          img: 'https://placehold.co/400x200?text=Password+Manager',
+          alt: 'Password Manager CLI preview',
+          link: 'https://github.com/Spanos-Panos/password-manager-cli'
+        }
+      ];
+      const projectsPerPage = 3;
+      let currentPage = 0;
+      function renderProjects() {
+        const container = document.getElementById('projects-container');
+        container.innerHTML = '';
+        const start = currentPage * projectsPerPage;
+        const end = start + projectsPerPage;
+        const pageProjects = projects.slice(start, end);
+        // Always show 3 slots per page, centering if fewer
+        for (let i = 0; i < projectsPerPage; i++) {
+          const proj = pageProjects[i];
+          if (proj) {
+            const card = document.createElement('article');
+            card.className = 'project-card';
+            card.tabIndex = 0;
+            card.style.cursor = 'pointer';
+            card.style.maxWidth = '400px';
+            card.onclick = () => window.open(proj.link, '_blank');
+            card.innerHTML = `
+              <img src="${proj.img}" alt="${proj.alt}" style="width:100%;border-radius:0.5rem 0.5rem 0 0;margin-bottom:1rem;object-fit:cover;max-height:180px;">
+              <div class="project-card-content">
+                <h3>${proj.title}</h3>
+                <p>${proj.desc}</p>
+                <a href="${proj.link}" target="_blank" rel="noopener">See it on GitHub →</a>
+              </div>
+            `;
+            container.appendChild(card);
+          } else {
+            // Empty slot for centering
+            const empty = document.createElement('div');
+            empty.style.maxWidth = '400px';
+            empty.style.flex = '1 1 0';
+            container.appendChild(empty);
+          }
+        }
+      }
+      document.getElementById('projects-prev').onclick = function() {
+        if (currentPage > 0) { currentPage--; renderProjects(); }
+      };
+      document.getElementById('projects-next').onclick = function() {
+        if ((currentPage + 1) * projectsPerPage < projects.length) { currentPage++; renderProjects(); }
+      };
+      renderProjects();
+    </script>
   </section>
 
   <!-- Skills Section -->
@@ -1890,4 +1954,51 @@
         border: 1px solid #e0e7ef;
       }
     </style>
+  <style>
+    .projects-pagination {
+      width: 100%;
+      margin: 1.5rem auto 0 auto;
+      display: flex;
+      justify-content: center;
+    }
+    .projects-pagination-flex {
+      display: flex;
+      width: 100%;
+      max-width: 420px;
+      align-items: center;
+      justify-content: space-between;
+      gap: 0.5rem;
+    }
+    .projects-pagination-flex .project-arrow-btn {
+      flex: 0 0 auto;
+      background: none;
+      border: none;
+      border-radius: 0;
+      color: #2563eb;
+      font-size: 2.1rem;
+      font-weight: 700;
+      padding: 0 0.7rem;
+      transition: color 0.2s, transform 0.15s;
+      box-shadow: none;
+      outline: none;
+      cursor: pointer;
+    }
+    .projects-pagination-flex .project-arrow-btn:hover,
+    .projects-pagination-flex .project-arrow-btn:focus {
+      color: #1e40af;
+      transform: scale(1.18);
+      background: none;
+      box-shadow: none;
+    }
+    .projects-pagination-flex .project-arrow-btn:active {
+      color: #60a5fa;
+      transform: scale(0.96);
+    }
+    .projects-pagination-flex .projects-page-indicator {
+      flex: 1 1 auto;
+      text-align: center;
+      font-weight: 600;
+      letter-spacing: 0.05em;
+    }
+  </style>
 </html>
