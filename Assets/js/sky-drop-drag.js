@@ -381,22 +381,22 @@ function injectModalCSS() {
 
 // --- GAME LAUNCHERS (load real games) ---
 window.launchSnakeGame = function() {
-    loadGameScript('/games/snake-phaser.js');
+    loadGameScript('./games/snake-phaser.js');
 };
 window.launchPuzzleGame = function() {
-    loadGameScript('/games/slide-puzzle-phaser.js');
+    loadGameScript('./games/slide-puzzle-phaser.js');
 };
 window.launchTowerGame = function() {
-    loadGameScript('/games/tower-builder-phaser.js');
+    loadGameScript('./games/tower-builder-phaser.js');
 };
 window.launchTetrisGame = function() {
-    loadGameScript('/games/tetris-phaser.js');
+    loadGameScript('./games/tetris-phaser.js');
 };
 window.launchMinesweeperGame = function() {
-    loadGameScript('/games/minesweeper-phaser.js');
+    loadGameScript('./games/minesweeper-phaser.js');
 };
 window.launchAboutMeQuiz = function() {
-    loadGameScript('/games/aboutme-quiz-phaser.js');
+    loadGameScript('./games/aboutme-quiz-phaser.js');
 };
 function loadGameScript(src) {
     const container = document.getElementById('game-container');
@@ -404,7 +404,7 @@ function loadGameScript(src) {
     // Remove any previous game script
     const old = document.getElementById('game-script');
     if (old) old.remove();
-    if (!src.startsWith('/games/')) src = '/games/' + src.replace(/^\/+/, '');
+    if (!src.startsWith('./games/')) src = './games/' + src.replace(/^\.?\/+/, '');
     window.__lastGameScript = src;
     const script = document.createElement('script');
     script.id = 'game-script';
