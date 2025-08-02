@@ -1,0 +1,270 @@
+/* Global App Styles with Cascading CSS System */
+
+/* IMPORT ORDER MATTERS FOR CASCADING:
+   1. Global styles first (site-wide defaults)
+   2. Tailwind CSS
+   3. Component-specific styles will be imported separately in HTML
+*/
+
+/* 1. Import Global/Public CSS (site-wide styles) */
+@import url('global.css');
+
+/* 2. Base Tailwind */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Additional Global Overrides and Legacy Support */
+/* These styles extend the global.css and provide backward compatibility */
+
+/* Enhanced typography that extends global styles */
+h1, h2, h3, h4, h5, h6 {
+    color: var(--global-text-primary);
+    font-weight: 600;
+    margin-bottom: var(--global-padding-md);
+    transition: var(--global-transition-normal);
+}
+
+h1 { font-size: 2.5rem; }
+h2 { font-size: 2rem; }
+h3 { font-size: 1.75rem; }
+h4 { font-size: 1.5rem; }
+h5 { font-size: 1.25rem; }
+h6 { font-size: 1.125rem; }
+
+/* Enhanced paragraph styles */
+p {
+    color: var(--global-text-secondary);
+    margin-bottom: var(--global-padding-md);
+    line-height: 1.6;
+}
+
+/* Enhanced link styles */
+a {
+    color: var(--global-primary);
+    text-decoration: none;
+    transition: var(--global-transition-fast);
+}
+
+a:hover {
+    color: var(--global-secondary);
+    text-decoration: none; /* Remove underline */
+}
+
+/* Enhanced list styles */
+ul, ol {
+    color: var(--global-text-secondary);
+    margin-bottom: var(--global-padding-md);
+    padding-left: var(--global-padding-lg);
+}
+
+li {
+    margin-bottom: var(--global-padding-sm);
+}
+
+/* Enhanced code styles */
+code {
+    background: var(--global-bg-secondary);
+    color: var(--global-text-primary);
+    padding: 0.2rem 0.4rem;
+    border-radius: var(--global-radius-sm);
+    font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
+    font-size: 0.9em;
+}
+
+pre {
+    background: var(--global-bg-secondary);
+    color: var(--global-text-primary);
+    padding: var(--global-padding-md);
+    border-radius: var(--global-radius-md);
+    overflow-x: auto;
+    margin-bottom: var(--global-padding-md);
+}
+
+pre code {
+    background: none;
+    padding: 0;
+}
+
+/* Enhanced table styles */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: var(--global-padding-md);
+    background: var(--global-bg-secondary);
+    border-radius: var(--global-radius-md);
+    overflow: hidden;
+}
+
+th, td {
+    padding: var(--global-padding-sm) var(--global-padding-md);
+    text-align: left;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+th {
+    background: var(--global-bg-tertiary);
+    color: var(--global-text-primary);
+    font-weight: 600;
+}
+
+td {
+    color: var(--global-text-secondary);
+}
+
+/* Enhanced form elements that extend global styles */
+.form-group {
+    margin-bottom: var(--global-padding-md);
+}
+
+.form-label {
+    display: block;
+    color: var(--global-text-primary);
+    font-weight: 500;
+    margin-bottom: var(--global-padding-sm);
+}
+
+.form-error {
+    color: var(--global-error);
+    font-size: 0.875rem;
+    margin-top: var(--global-padding-sm);
+}
+
+.form-success {
+    color: var(--global-success);
+    font-size: 0.875rem;
+    margin-top: var(--global-padding-sm);
+}
+
+/* Selection styles */
+::selection {
+    background: var(--global-primary);
+    color: var(--global-text-primary);
+}
+
+::-moz-selection {
+    background: var(--global-primary);
+    color: var(--global-text-primary);
+}
+
+/* Focus styles for accessibility */
+*:focus {
+    outline: 2px solid var(--global-primary);
+    outline-offset: 2px;
+}
+
+/* Smooth scrolling behavior */
+html {
+    scroll-behavior: smooth;
+}
+
+/* Responsive images */
+img {
+    max-width: 100%;
+    height: auto;
+    border-radius: var(--global-radius-md);
+}
+
+/* Loading states */
+.loading {
+    opacity: 0.6;
+    pointer-events: none;
+    transition: var(--global-transition-normal);
+}
+
+/* Animations */
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes slideInLeft {
+    from {
+        opacity: 0;
+        transform: translateX(-30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+@keyframes slideInRight {
+    from {
+        opacity: 0;
+        transform: translateX(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+/* Animation utility classes */
+.animate-fadeIn { animation: fadeIn 0.5s ease forwards; }
+.animate-fadeInUp { animation: fadeInUp 0.8s ease forwards; }
+.animate-slideInLeft { animation: slideInLeft 0.8s ease forwards; }
+.animate-slideInRight { animation: slideInRight 0.8s ease forwards; }
+
+/* Delayed animations */
+.animate-delay-100 { animation-delay: 0.1s; }
+.animate-delay-200 { animation-delay: 0.2s; }
+.animate-delay-300 { animation-delay: 0.3s; }
+.animate-delay-400 { animation-delay: 0.4s; }
+.animate-delay-500 { animation-delay: 0.5s; }
+
+/* Media queries for global responsiveness */
+@media (max-width: 1200px) {
+    .global-container {
+        max-width: 960px;
+    }
+}
+
+@media (max-width: 992px) {
+    .global-container {
+        max-width: 720px;
+    }
+    
+    h1 { font-size: 2.25rem; }
+    h2 { font-size: 1.875rem; }
+    h3 { font-size: 1.5rem; }
+}
+
+@media (max-width: 768px) {
+    .global-container {
+        max-width: 540px;
+        padding: 0 var(--global-padding-md);
+    }
+    
+    h1 { font-size: 2rem; }
+    h2 { font-size: 1.75rem; }
+    h3 { font-size: 1.5rem; }
+    h4 { font-size: 1.25rem; }
+    
+    .global-section {
+        padding: var(--global-padding-lg) var(--global-padding-md);
+    }
+}
+
+@media (max-width: 576px) {
+    .global-container {
+        padding: 0 var(--global-padding-sm);
+    }
+    
+    h1 { font-size: 1.75rem; }
+    h2 { font-size: 1.5rem; }
+    h3 { font-size: 1.25rem; }
+}
+
+

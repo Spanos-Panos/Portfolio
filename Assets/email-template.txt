@@ -1,0 +1,20 @@
+🌟 NEW PORTFOLIO CONTACT MESSAGE 🌟
+
+📬 Contact Details:
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+👤 Name: {{from_name}}
+📧 Email: {{from_email}}
+
+💬 Message:
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+{{message}}
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+✅ Quick Reply: Simply reply to this email to respond to {{from_name}}
+
+🕒 Received through your portfolio contact form
+📅 Date: {{current_date}}
+
+Best regards,
+Your Portfolio Contact System 🚀

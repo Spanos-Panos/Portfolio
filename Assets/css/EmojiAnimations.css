@@ -1,0 +1,164 @@
+/* Interactive Emoji Animations */
+
+/* Ring animation for phone emojis */
+@keyframes ring {
+    0%, 100% { transform: rotate(0deg) scale(1); }
+    10% { transform: rotate(-10deg) scale(1.1); }
+    20% { transform: rotate(10deg) scale(1.1); }
+    30% { transform: rotate(-10deg) scale(1.1); }
+    40% { transform: rotate(10deg) scale(1.1); }
+    50% { transform: rotate(-5deg) scale(1.05); }
+    60% { transform: rotate(5deg) scale(1.05); }
+    70% { transform: rotate(-5deg) scale(1.05); }
+    80% { transform: rotate(5deg) scale(1.05); }
+    90% { transform: rotate(0deg) scale(1); }
+}
+
+/* Fly away animation for email emojis */
+@keyframes flyAway {
+    0% { transform: translateY(0) scale(1) rotate(0deg); opacity: 1; }
+    20% { transform: translateY(-20px) scale(1.2) rotate(10deg); opacity: 1; }
+    100% { transform: translateY(-300px) translateX(200px) scale(0.5) rotate(360deg); opacity: 0; }
+}
+
+/* Bounce and glow for skill emojis */
+@keyframes bounceGlow {
+    0% { transform: scale(1); filter: brightness(1) drop-shadow(0 0 0 transparent); }
+    25% { transform: scale(1.3); filter: brightness(1.5) drop-shadow(0 0 20px rgba(102, 126, 234, 0.8)); }
+    50% { transform: scale(1.1); filter: brightness(1.3) drop-shadow(0 0 15px rgba(118, 75, 162, 0.6)); }
+    75% { transform: scale(1.2); filter: brightness(1.4) drop-shadow(0 0 25px rgba(240, 147, 251, 0.7)); }
+    100% { transform: scale(1); filter: brightness(1) drop-shadow(0 0 0 transparent); }
+}
+
+/* Pulse animation for project emojis */
+@keyframes pulse {
+    0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(102, 126, 234, 0.7); }
+    50% { transform: scale(1.2); box-shadow: 0 0 0 20px rgba(102, 126, 234, 0); }
+    100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(102, 126, 234, 0); }
+}
+
+/* Folder open animation for GitHub links */
+@keyframes folderOpen {
+    0% { transform: scale(1) rotateY(0deg); }
+    25% { transform: scale(1.1) rotateY(-15deg); }
+    50% { transform: scale(1.2) rotateY(-30deg); filter: brightness(1.3); }
+    75% { transform: scale(1.1) rotateY(-15deg); }
+    100% { transform: scale(1) rotateY(0deg); }
+}
+
+/* Rocket launch animation for form submission */
+@keyframes rocketLaunch {
+    0% { transform: translateY(0) scale(1) rotate(0deg); filter: brightness(1); }
+    10% { transform: translateY(-5px) scale(1.1) rotate(-5deg); filter: brightness(1.2); }
+    20% { transform: translateY(-10px) scale(1.2) rotate(5deg); filter: brightness(1.4); }
+    30% { transform: translateY(-20px) scale(1.1) rotate(-2deg); filter: brightness(1.6); }
+    50% { transform: translateY(-50px) scale(1.3) rotate(10deg); filter: brightness(2) drop-shadow(0 0 20px rgba(255, 165, 0, 0.8)); }
+    70% { transform: translateY(-100px) scale(1.1) rotate(-5deg); filter: brightness(1.5); }
+    100% { transform: translateY(-200px) scale(0.8) rotate(360deg); filter: brightness(1); opacity: 0; }
+}
+
+/* Shake animation for errors */
+@keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    10% { transform: translateX(-10px); }
+    20% { transform: translateX(10px); }
+    30% { transform: translateX(-10px); }
+    40% { transform: translateX(10px); }
+    50% { transform: translateX(-5px); }
+    60% { transform: translateX(5px); }
+    70% { transform: translateX(-5px); }
+    80% { transform: translateX(5px); }
+    90% { transform: translateX(0); }
+}
+
+/* Floating animation for idle state */
+@keyframes float {
+    0%, 100% { transform: translateY(0px); }
+    50% { transform: translateY(-8px); }
+}
+
+/* Sparkle effect */
+@keyframes sparkle {
+    0% { transform: scale(0) rotate(0deg); opacity: 1; }
+    50% { transform: scale(1) rotate(180deg); opacity: 1; }
+    100% { transform: scale(0) rotate(360deg); opacity: 0; }
+}
+
+/* Explosion effect */
+@keyframes explode {
+    0% { transform: scale(0); opacity: 1; }
+    50% { transform: scale(1.5); opacity: 0.8; }
+    100% { transform: scale(0); opacity: 0; }
+}
+
+/* Enhanced hover effects for emojis */
+.skill-icon, .badge-icon, .project-icon, .btn-icon, .social-icon {
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.skill-icon:hover, .badge-icon:hover, .project-icon:hover {
+    filter: brightness(1.2) drop-shadow(0 0 10px rgba(102, 126, 234, 0.5));
+}
+
+.btn-icon:hover {
+    filter: brightness(1.3) drop-shadow(0 0 8px rgba(118, 75, 162, 0.6));
+}
+
+.social-icon:hover {
+    filter: brightness(1.4) drop-shadow(0 0 12px rgba(240, 147, 251, 0.7));
+}
+
+/* Particle effects */
+.particle {
+    font-size: 1.2rem;
+    position: fixed;
+    pointer-events: none;
+    z-index: 9999;
+}
+
+.particle-sparkle {
+    animation: sparkle 1s ease-out forwards;
+}
+
+.particle-explosion {
+    animation: explode 0.8s ease-out forwards;
+}
+
+/* Special effect for successful form submission */
+.success-animation {
+    animation: bounceGlow 1s ease-in-out, float 2s ease-in-out infinite 1s;
+}
+
+/* Loading effect for buttons */
+.loading-emoji {
+    animation: pulse 1.5s ease-in-out infinite;
+}
+
+/* Special click states */
+.emoji-clicked {
+    animation: bounceGlow 0.6s ease-out;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    @keyframes flyAway {
+        0% { transform: translateY(0) scale(1) rotate(0deg); opacity: 1; }
+        20% { transform: translateY(-15px) scale(1.1) rotate(8deg); opacity: 1; }
+        100% { transform: translateY(-200px) translateX(150px) scale(0.4) rotate(270deg); opacity: 0; }
+    }
+    
+    @keyframes rocketLaunch {
+        0% { transform: translateY(0) scale(1) rotate(0deg); filter: brightness(1); }
+        10% { transform: translateY(-3px) scale(1.05) rotate(-3deg); filter: brightness(1.1); }
+        20% { transform: translateY(-8px) scale(1.1) rotate(3deg); filter: brightness(1.3); }
+        30% { transform: translateY(-15px) scale(1.05) rotate(-2deg); filter: brightness(1.5); }
+        50% { transform: translateY(-40px) scale(1.2) rotate(8deg); filter: brightness(1.8) drop-shadow(0 0 15px rgba(255, 165, 0, 0.7)); }
+        70% { transform: translateY(-80px) scale(1.0) rotate(-4deg); filter: brightness(1.4); }
+        100% { transform: translateY(-150px) scale(0.7) rotate(270deg); filter: brightness(1); opacity: 0; }
+    }
+    
+    .particle {
+        font-size: 1rem;
+    }
+}
